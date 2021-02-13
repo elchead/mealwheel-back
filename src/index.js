@@ -1,11 +1,9 @@
-var i = "hi";
-
 /**
  * This says hi
  * @param {number} int
- * @param {string} 
+ * @param {string}
  */
 function hi(int) {
-    console.log("Hello World!");
-    return "hi"; 
+  console.log("Hello World!");
+  return "hi";
 }
