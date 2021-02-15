@@ -1,7 +1,15 @@
+const file = require("../utils/file");
+
 const get_recipes = () => {
+  filename = "./src/run.py";
+  try {
+    file.isFileExistent(filename);
+  } catch (err) {
+    console.error(err);
+  }
   return new Promise((resolve, reject) => {
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn("python", ["./src/run.py"]);
+    const pythonProcess = spawn("python", [filename]);
     var res = "";
     pythonProcess.stdout.on("data", (data) => {
       data = data.toString();
@@ -11,6 +19,7 @@ const get_recipes = () => {
       resolve(res);
     });
     pythonProcess.on("error", (err) => {
+      console.error(err);
       reject(err);
     });
   });
