@@ -9,6 +9,6 @@ const router = express.Router();
 const recommend = require("../controllers/recommender");
 router.get("/recipes", async function (req, res, next) {
   const recipe = await recommend.getRecipes().catch(console.error);
-  res.send(recipe);
+  res.json(JSON.parse(recipe));
 });
 module.exports = router;

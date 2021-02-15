@@ -1,4 +1,5 @@
 // Import the dependencies for testing
+const { expect } = require("chai");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../src/index");
@@ -6,15 +7,20 @@ const server = require("../src/index");
 chai.use(chaiHttp);
 chai.should();
 
-describe("/test", () => {
-  it("tester", (done) => {
+describe("recipes", () => {
+  it("fetch recipes", (done) => {
     chai
       .request(server)
-      .get("/hi")
+      .get("/recipes")
       .end((err, res) => {
         res.should.have.status(200);
-        res.text.should.be.a("string");
-        res.text.should.be.eql("hi");
+        console.log(res.body.Ingredients);
+        expect(res).to.be.json;
+        const expected = {
+          Ingredients: ["Apple", "Banana"],
+          Steps: "Do that...",
+        };
+        res.body.should.be.eql(expected);
         done();
       });
   });
