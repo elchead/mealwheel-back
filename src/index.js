@@ -1,6 +1,4 @@
 const express = require("express");
-const recommend = require("./controllers/recommender");
-
 const app = express();
 
 const recipeRoutes = require("./routes/recipes");

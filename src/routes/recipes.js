@@ -7,14 +7,8 @@ const router = express.Router();
 // });
 
 const recommend = require("../controllers/recommender");
-router.get("/recipes", function (req, res, next) {
-  recommend
-    .get_recipes()
-    .then((recipe) => {
-      res.send(recipe);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+router.get("/recipes", async function (req, res, next) {
+  const recipe = await recommend.getRecipes().catch(console.error);
+  res.send(recipe);
 });
 module.exports = router;

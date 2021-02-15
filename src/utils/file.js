@@ -13,34 +13,42 @@ const isFileExistent = (filepath) => {
 };
 
 const spawn = require("child_process").spawn;
-// not working
+/**
+ * Helper class to execute python and fetch data stream (flushed from python print)
+ */
 class PythonExecutor {
+  /**
+   *
+   * @param {string} filepath : relative filepath starting from root dir
+   */
   constructor(filepath) {
     this.path = filepath;
     this.process = spawn("python", [filepath]);
-  }
-  getOutput() {
     try {
-      console.log(isFileExistent(this.path));
+      isFileExistent(this.path);
     } catch (err) {
       console.error(err);
     }
-    var res = "";
-    const processo = spawn("python", [this.path]);
-    processo.stdout.on("data", (data) => {
-      data = data.toString();
-      res += data;
+  }
+  /**
+   * Get string output from python print statements
+   * @return {Promise<string>} : contains string
+   */
+  getStringOutput() {
+    return new Promise((resolve, reject) => {
+      let res = "";
+      this.process.stdout.on("data", (data) => {
+        data = data.toString();
+        res += data;
+      });
+      this.process.on("close", (code) => {
+        resolve(res);
+      });
+      this.process.on("error", (err) => {
+        console.error(err);
+        reject(err);
+      });
     });
-    console.log(res);
-    // console.log(res);
-    // pythonProcess.on("close", (code) => {
-    //   resolve(res);
-    // });
-    // pythonProcess.on("error", (err) => {
-    //   console.error(err);
-    //   reject(err);
-    // });
-    return res;
   }
 }
 module.exports = { FileError, PythonExecutor, isFileExistent };
