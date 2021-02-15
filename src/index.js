@@ -1,3 +1,4 @@
+const PORT = process.env.PORT || 5000;
 const express = require("express");
 const app = express();
 
@@ -11,6 +12,6 @@ app.get("/hi", (req, res) => {
   res.send(`hi`);
 });
 
-app.listen(5000);
+app.listen(PORT);
 console.log("listening on: http://localhost:5000/recipes");
 module.exports = app; // for testing
