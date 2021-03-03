@@ -7,8 +7,9 @@ const connectionOptions = {
   useFindAndModify: false,
 };
 
-// const mongoUrl = process.env.MONGO_URL || config.connectionString;
-// mongoose.connect(mongoUrl, connectionOptions);
+// const mongoUrl = process.env.MONGO_URL || coynfig.connectionString;
+// if (process.env.MONGO_URL === undefined)
+mongoose.connect(process.env.MONGO_URL, connectionOptions);
 // mongoose.Promise = global.Promise;
 
 module.exports = {
