@@ -17,9 +17,9 @@ app.get("/test", (req, res) => {
 });
 
 // use JWT auth to secure the api
-app.use(jwt());
-const recipeRoutes = require("./routes/recipes");
+const recipeRoutes = require("./recipes/recipes.service");
 app.use("/", recipeRoutes);
+app.use(jwt()); // TODO include Auth before end point
 
 // api routes
 app.use("/users", require("./users/users.controller"));
