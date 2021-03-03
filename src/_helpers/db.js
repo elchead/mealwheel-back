@@ -8,8 +8,10 @@ const connectionOptions = {
 };
 
 // const mongoUrl = process.env.MONGO_URL || coynfig.connectionString;
-// if (process.env.MONGO_URL === undefined)
-mongoose.connect(process.env.MONGO_URL, connectionOptions);
+if (process.env.NODE_ENV === undefined) {
+  mongoose.connect(process.env.MONGO_URL, connectionOptions);
+  console.log("production");
+}
 // mongoose.Promise = global.Promise;
 
 module.exports = {
