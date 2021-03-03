@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 describe("recipes", () => {
-  it("fetch recipes", (done) => {
+  it("should fetch", (done) => {
     chai
       .request(server)
       .get("/recipes")

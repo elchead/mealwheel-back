@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const jwt = require("./_helpers/jwt");
-const errorHandler = require("./_helpers/error-handler");
+// const errorHandler = require("./_helpers/error-handler");
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,7 +17,7 @@ app.get("/test", (req, res) => {
 });
 
 // use JWT auth to secure the api
-const recipeRoutes = require("./recipes/recipes.service");
+const recipeRoutes = require("./recipes/recipes.controller");
 app.use("/", recipeRoutes);
 app.use(jwt()); // TODO include Auth before end point
 

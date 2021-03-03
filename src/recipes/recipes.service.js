@@ -1,14 +1,12 @@
-const express = require("express");
-const router = express.Router();
+const file = require("../utils/file");
 
-// /* GET home page. */
-// router.get("/", function (req, res, next) {
-//   res.render("index", { title: "Express" });
-// });
-
-const recommend = require("./recipes.controller");
-router.get("/recipes", async function (req, res, next) {
-  const recipe = await recommend.getRecipes().catch(console.error);
-  res.json(JSON.parse(recipe));
-});
-module.exports = router;
+/**
+ * fetch recipe data by calling python
+ * @return {string}
+ */
+function getRecipes() {
+  filename = "./src/run.py";
+  const py = new file.PythonExecutor(filename);
+  return py.getStringOutput();
+}
+exports.getRecipes = getRecipes;
