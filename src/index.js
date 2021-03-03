@@ -1,16 +1,29 @@
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const jwt = require("./_helpers/jwt");
+const errorHandler = require("./_helpers/error-handler");
 
-const recipeRoutes = require("./routes/recipes");
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(cors());
-app.use("/", recipeRoutes);
 
 app.get("/test", (req, res) => {
   res.send(`${Date.now()}`);
 });
 
+// use JWT auth to secure the api
+app.use(jwt());
+const recipeRoutes = require("./routes/recipes");
+app.use("/", recipeRoutes);
+
+// api routes
+app.use("/users", require("./users/users.controller"));
+
 app.listen(PORT);
-console.log("listening on: http://localhost:5000/recipes");
+console.log("listening on: http://localhost:4000/recipes");
 module.exports = app; // for testing
