@@ -22,3 +22,5 @@ This project uses the following tools:
 
 - **Eslint**: to encourage consistent code style
 - **Prettier**: to format code
+- **Husky**: for git-hookes (linting and testing)
+- **Mocha + Chai**: unit-testing
