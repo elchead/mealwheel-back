@@ -1,4 +1,4 @@
-const config = require("../../db-config.json");
+const config = require("config");
 const mongoose = require("mongoose");
 const connectionOptions = {
   useCreateIndex: true,
@@ -7,10 +7,8 @@ const connectionOptions = {
   useFindAndModify: false,
 };
 
-// const mongoUrl = process.env.MONGO_URL || coynfig.connectionString;
-if (process.env.NODE_ENV === undefined) {
+if (config.util.getEnv("NODE_CONFIG_ENV") != "test") {
   mongoose.connect(process.env.MONGO_URL, connectionOptions);
-  console.log("production");
 }
 // mongoose.Promise = global.Promise;
 

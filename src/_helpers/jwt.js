@@ -1,11 +1,11 @@
 const expressJwt = require("express-jwt");
-const config = require("../../db-config.json");
+const config = require("config");
 const userService = require("../users/user.service");
 
 module.exports = jwt;
 
 function jwt() {
-  const secret = config.secret;
+  const secret = config.get("secret");
   return expressJwt({ secret, algorithms: ["HS256"], isRevoked }).unless({
     path: [
       // public routes that don't require authentication

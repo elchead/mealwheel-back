@@ -1,5 +1,5 @@
 ﻿/* eslint-disable require-jsdoc */
-const config = require("../../db-config.json");
+const config = require("config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../_helpers/db");
@@ -17,7 +17,7 @@ module.exports = {
 async function authenticate({ username, password }) {
   const user = await User.findOne({ username });
   if (user && bcrypt.compareSync(password, user.hash)) {
-    const token = jwt.sign({ sub: user.id }, config.secret, {
+    const token = jwt.sign({ sub: user.id }, config.get("secret"), {
       expiresIn: "7d",
     });
     return {

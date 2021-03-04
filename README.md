@@ -24,3 +24,4 @@ This project uses the following tools:
 - **Prettier**: to format code
 - **Husky**: for git-hookes (linting and testing)
 - **Mocha + Chai**: unit-testing
+- **Config**: manage different configurations for production and testing
