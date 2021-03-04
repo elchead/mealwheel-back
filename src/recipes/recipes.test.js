@@ -2,13 +2,13 @@
 const { expect } = require("chai");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const server = require("../src/index");
+const server = require("../index");
 // Configure chai
 chai.use(chaiHttp);
 chai.should();
 
 describe("recipes", () => {
-  it("fetch recipes", (done) => {
+  it("should fetch", (done) => {
     chai
       .request(server)
       .get("/recipes")

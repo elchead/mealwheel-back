@@ -6,7 +6,7 @@ const router = express.Router();
 //   res.render("index", { title: "Express" });
 // });
 
-const recommend = require("../controllers/recommender");
+const recommend = require("./recipes.service");
 router.get("/recipes", async function (req, res, next) {
   const recipe = await recommend.getRecipes().catch(console.error);
   res.json(JSON.parse(recipe));
