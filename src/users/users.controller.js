@@ -11,6 +11,7 @@ router.get("/current", getCurrent);
 router.get("/:id", getById);
 router.put("/:id", update);
 router.delete("/:id", _delete);
+router.post("/save-recipe", saveRecipe);
 
 module.exports = router;
 
@@ -63,6 +64,13 @@ function update(req, res, next) {
 function _delete(req, res, next) {
   userService
     .delete(req.params.id)
+    .then(() => res.json({}))
+    .catch((err) => next(err));
+}
+
+function saveRecipe(req, res, next) {
+  userService
+    .saveRecipe(req.body)
     .then(() => res.json({}))
     .catch((err) => next(err));
 }
