@@ -13,6 +13,7 @@ module.exports = {
   update,
   delete: _delete,
   saveRecipe,
+  deleteRecipe,
 };
 
 async function authenticate({ username, password }) {
@@ -80,15 +81,25 @@ async function _delete(id) {
   await User.findByIdAndRemove(id);
 }
 
-async function saveRecipe(id, recipe) {
-  const user = await User.findById(id);
+const isRecipeFound = (recipes, recipeId) => {
+  return recipes.find((recipe) => recipe.id === recipeId);
+};
+
+async function saveRecipe(userId, recipe) {
+  const user = await User.findById(userId);
 
   // validate
   if (!user) throw Error("User not found");
   console.log(user);
-  const isRecipeFound = (user, reqRecipe) => {
-    return user.recipes.find((recipe) => recipe.id === reqRecipe.id);
-  };
-  if (!isRecipeFound(user, recipe)) user.recipes = [...user.recipes, recipe];
+  if (!isRecipeFound(user.recipes, recipe.id))
+    user.recipes = [...user.recipes, recipe];
+  user.save();
+}
+
+async function deleteRecipe(userId, recipeId) {
+  const user = await User.findById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  user.recipes = user.recipes.filter((item) => item.id != recipeId);
   user.save();
 }

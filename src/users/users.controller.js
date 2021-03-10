@@ -12,6 +12,7 @@ router.get("/:id", getById);
 router.put("/:id", update);
 router.delete("/:id", _delete);
 router.post("/:id/saveRecipe", saveRecipe);
+router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
 
 module.exports = router;
 
@@ -71,6 +72,13 @@ function _delete(req, res, next) {
 function saveRecipe(req, res, next) {
   userService
     .saveRecipe(req.params.id, req.body.recipe)
+    .then(() => res.json({}))
+    .catch((err) => next(err));
+}
+
+function deleteRecipe(req, res, next) {
+  userService
+    .deleteRecipe(req.params.id, req.params.recipeId)
     .then(() => res.json({}))
     .catch((err) => next(err));
 }
