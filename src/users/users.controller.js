@@ -11,7 +11,7 @@ router.get("/current", getCurrent);
 router.get("/:id", getById);
 router.put("/:id", update);
 router.delete("/:id", _delete);
-router.post("/:id/save-recipe", saveRecipe);
+router.post("/:id/saveRecipe", saveRecipe);
 
 module.exports = router;
 
