@@ -80,14 +80,15 @@ async function _delete(id) {
   await User.findByIdAndRemove(id);
 }
 
-async function saveRecipe(body) {
-  const user = await User.findById(body.id);
+async function saveRecipe(id, recipe) {
+  const user = await User.findById(id);
+
   // validate
   if (!user) throw Error("User not found");
+  console.log(user);
   const isRecipeFound = (user, reqRecipe) => {
     return user.recipes.find((recipe) => recipe.id === reqRecipe.id);
   };
-  if (!isRecipeFound(user, body.recipe))
-    user.recipes = [...user.recipes, body.recipe];
+  if (!isRecipeFound(user, recipe)) user.recipes = [...user.recipes, recipe];
   user.save();
 }
