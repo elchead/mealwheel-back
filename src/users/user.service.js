@@ -12,6 +12,9 @@ module.exports = {
   create,
   update,
   delete: _delete,
+  saveRecipe,
+  deleteRecipe,
+  checkRecipe,
 };
 
 async function authenticate({ username, password }) {
@@ -77,4 +80,36 @@ async function update(id, userParam) {
 
 async function _delete(id) {
   await User.findByIdAndRemove(id);
+}
+
+const isRecipeFound = (recipes, recipeId) => {
+  return recipes.find((recipe) => recipe.id === recipeId);
+};
+
+async function saveRecipe(userId, recipe) {
+  const user = await User.findById(userId);
+
+  // validate
+  if (!user) throw Error("User not found");
+  console.log(user);
+  if (!isRecipeFound(user.recipes, recipe.id))
+    user.recipes = [...user.recipes, recipe];
+  user.save();
+}
+
+async function deleteRecipe(userId, recipeId) {
+  const user = await User.findById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  user.recipes = user.recipes.filter((item) => item.id != recipeId);
+  user.save();
+}
+
+async function checkRecipe(userId, recipeId) {
+  const user = await User.findById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  let isFound = user.recipes.find(({ id }) => id === parseInt(recipeId));
+  isFound = isFound === undefined ? false : true;
+  return isFound;
 }
