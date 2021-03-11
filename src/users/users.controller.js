@@ -13,7 +13,7 @@ router.put("/:id", update);
 router.delete("/:id", _delete);
 router.post("/:id/saveRecipe", saveRecipe);
 router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
-
+router.post("/:id/checkRecipe/:recipeId", checkRecipe);
 module.exports = router;
 
 function authenticate(req, res, next) {
@@ -80,5 +80,14 @@ function deleteRecipe(req, res, next) {
   userService
     .deleteRecipe(req.params.id, req.params.recipeId)
     .then(() => res.json({}))
+    .catch((err) => next(err));
+}
+
+function checkRecipe(req, res, next) {
+  userService
+    .checkRecipe(req.params.id, req.params.recipeId)
+    .then((found) => {
+      res.send(found);
+    })
     .catch((err) => next(err));
 }
