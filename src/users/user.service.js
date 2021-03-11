@@ -109,7 +109,7 @@ async function checkRecipe(userId, recipeId) {
   const user = await User.findById(userId);
   // validate
   if (!user) throw Error("User not found");
-  let isFound = user.recipes.find(({ id }) => id === recipeId);
+  let isFound = user.recipes.find(({ id }) => id === parseInt(recipeId));
   isFound = isFound === undefined ? false : true;
   return isFound;
 }
