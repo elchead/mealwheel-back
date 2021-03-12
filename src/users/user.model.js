@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const recipe = {
+  name: String,
+  id: Number,
+  minutes: Number,
+  nutrition: [Number],
+  steps: [String],
+  description: String,
+};
 const schema = new Schema({
   username: { type: String, unique: true, required: true },
   hash: { type: String, required: true },
@@ -8,15 +16,17 @@ const schema = new Schema({
   lastName: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
   recipes: {
-    type: {
-      name: String,
-      id: Number,
-      minutes: Number,
-      nutrition: [Number],
-      steps: [String],
-      description: String,
-    },
+    type: recipe,
     required: false,
+  },
+  weekPlan: {
+    mo: { type: recipe },
+    tu: { type: recipe },
+    we: { type: recipe },
+    th: { type: recipe },
+    fr: { type: recipe },
+    sa: { type: recipe },
+    su: { type: recipe },
   },
 });
 

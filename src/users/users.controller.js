@@ -14,6 +14,7 @@ router.delete("/:id", _delete);
 router.post("/:id/saveRecipe", saveRecipe);
 router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
 router.post("/:id/checkRecipe/:recipeId", checkRecipe);
+router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
 module.exports = router;
 
 function authenticate(req, res, next) {
@@ -89,5 +90,12 @@ function checkRecipe(req, res, next) {
     .then((found) => {
       res.send(found);
     })
+    .catch((err) => next(err));
+}
+
+function updateDay(req, res, next) {
+  userService
+    .updateDay(req.params.id, req.params.day, req.body.recipe)
+    .then(() => res.json({}))
     .catch((err) => next(err));
 }
