@@ -15,6 +15,7 @@ module.exports = {
   saveRecipe,
   deleteRecipe,
   checkRecipe,
+  updateDay,
 };
 
 async function authenticate({ username, password }) {
@@ -112,4 +113,12 @@ async function checkRecipe(userId, recipeId) {
   let isFound = user.recipes.find(({ id }) => id === parseInt(recipeId));
   isFound = isFound === undefined ? false : true;
   return isFound;
+}
+
+async function updateDay(userId, day, recipe) {
+  const user = await User.findById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  user.weekPlan[day] = recipe;
+  user.save();
 }
