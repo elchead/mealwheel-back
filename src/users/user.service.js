@@ -93,9 +93,16 @@ async function saveRecipe(userId, recipe) {
 
   // validate
   if (!user) throw Error("User not found");
-  if (!isRecipeFound(user.recipes, recipe.id))
+  if (!isRecipeFound(user.recipes, recipe.id)) {
     user.recipes = [...user.recipes, recipe];
-  user.save();
+  }
+  await user.save((err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+  });
+  return user;
 }
 
 async function deleteRecipe(userId, recipeId) {
@@ -107,6 +114,7 @@ async function deleteRecipe(userId, recipeId) {
 }
 
 async function checkRecipe(userId, recipeId) {
+  const users = await getAll(); // TODO why is this necessary???
   const user = await User.findById(userId);
   // validate
   if (!user) throw Error("User not found");
