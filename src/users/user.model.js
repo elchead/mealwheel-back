@@ -16,8 +16,9 @@ const schema = new Schema({
   lastName: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
   recipes: {
-    type: recipe,
+    type: [recipe],
     required: false,
+    default: [],
   },
   weekPlan: {
     mo: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
