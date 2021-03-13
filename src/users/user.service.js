@@ -16,6 +16,7 @@ module.exports = {
   deleteRecipe,
   checkRecipe,
   updateDay,
+  getDaysToBeUpdated,
 };
 
 async function authenticate({ username, password }) {
@@ -109,8 +110,11 @@ async function checkRecipe(userId, recipeId) {
   const user = await User.findById(userId);
   // validate
   if (!user) throw Error("User not found");
-  let isFound = user.recipes.find(({ id }) => id === parseInt(recipeId));
-  isFound = isFound === undefined ? false : true;
+  let isFound = false;
+  if (user.recipes) {
+    isFound = user.recipes.find(({ id }) => id === parseInt(recipeId));
+    isFound = isFound === undefined ? false : true;
+  }
   return isFound;
 }
 
@@ -129,4 +133,26 @@ async function updateDay(userId, day, recipe) {
   console.log(getNumberOfWeek());
   user.weekPlan[day].lastUpdatedWeek = getNumberOfWeek();
   user.save();
+}
+
+async function updateDay(userId, day, recipe) {
+  const user = await User.findById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  user.weekPlan[day].recipe = recipe;
+  user.weekPlan[day].lastUpdatedWeek = getNumberOfWeek();
+  user.save();
+}
+
+async function getDaysToBeUpdated(userId) {
+  const user = await User.findById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  const currWeek = getNumberOfWeek();
+  let days = [];
+  Object.entries(user.weekPlan).forEach(([day, obj]) => {
+    if (obj.lastUpdatedWeek != currWeek) days.push(day);
+  });
+  days = days.slice(1); // skip init entry
+  return days;
 }
