@@ -92,7 +92,6 @@ async function saveRecipe(userId, recipe) {
 
   // validate
   if (!user) throw Error("User not found");
-  console.log(user);
   if (!isRecipeFound(user.recipes, recipe.id))
     user.recipes = [...user.recipes, recipe];
   user.save();
@@ -115,10 +114,19 @@ async function checkRecipe(userId, recipeId) {
   return isFound;
 }
 
+function getNumberOfWeek() {
+  const today = new Date();
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+  const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+}
+
 async function updateDay(userId, day, recipe) {
   const user = await User.findById(userId);
   // validate
   if (!user) throw Error("User not found");
-  user.weekPlan[day] = recipe;
+  user.weekPlan[day].recipe = recipe;
+  console.log(getNumberOfWeek());
+  user.weekPlan[day].lastUpdatedWeek = getNumberOfWeek();
   user.save();
 }

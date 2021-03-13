@@ -20,13 +20,13 @@ const schema = new Schema({
     required: false,
   },
   weekPlan: {
-    mo: { type: recipe },
-    tu: { type: recipe },
-    we: { type: recipe },
-    th: { type: recipe },
-    fr: { type: recipe },
-    sa: { type: recipe },
-    su: { type: recipe },
+    mo: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
+    tu: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
+    we: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
+    th: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
+    fr: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
+    sa: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
+    su: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
   },
 });
 
