@@ -12,9 +12,9 @@ app.use(bodyParser.json());
 
 app.use(cors({ credentials: true, origin: true }));
 
-app.get("/test", (req, res) => {
-  res.send(`${Date.now()}`);
-});
+// app.get("/test", (req, res) => {
+//   res.send(`${Date.now()}`);
+// });
 
 // use JWT auth to secure the api
 const recipeRoutes = require("./recipes/recipes.controller");
