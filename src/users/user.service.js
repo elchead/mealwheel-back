@@ -14,7 +14,7 @@ module.exports = {
   delete: _delete,
   saveRecipe,
   deleteRecipe,
-  checkRecipe,
+  isRecipeInDb: isRecipeInDb,
   updateDay,
   getDaysToBeUpdated,
 };
@@ -113,7 +113,7 @@ async function deleteRecipe(userId, recipeId) {
   user.save();
 }
 
-async function checkRecipe(userId, recipeId) {
+async function isRecipeInDb(userId, recipeId) {
   const users = await getAll(); // TODO why is this necessary???
   const user = await User.findById(userId);
   // validate
@@ -138,20 +138,9 @@ async function updateDay(userId, day, recipe) {
   // validate
   if (!user) throw Error("User not found");
   user.weekPlan[day].recipe = recipe;
-  console.log(getNumberOfWeek());
   user.weekPlan[day].lastUpdatedWeek = getNumberOfWeek();
   user.save();
 }
-
-async function updateDay(userId, day, recipe) {
-  const user = await User.findById(userId);
-  // validate
-  if (!user) throw Error("User not found");
-  user.weekPlan[day].recipe = recipe;
-  user.weekPlan[day].lastUpdatedWeek = getNumberOfWeek();
-  user.save();
-}
-
 async function getDaysToBeUpdated(userId) {
   const user = await User.findById(userId);
   // validate

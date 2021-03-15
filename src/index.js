@@ -4,17 +4,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const jwt = require("./_helpers/jwt");
-// const errorHandler = require("./_helpers/error-handler");
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors({ credentials: true, origin: true }));
-
-// app.get("/test", (req, res) => {
-//   res.send(`${Date.now()}`);
-// });
 
 // use JWT auth to secure the api
 const recipeRoutes = require("./recipes/recipes.controller");

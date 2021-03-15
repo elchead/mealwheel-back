@@ -45,7 +45,7 @@ describe("users", () => {
     };
     const user = await service.authenticate(testUser);
     await service.saveRecipe(user.id, recipe);
-    const isSaved = await service.checkRecipe(user.id, recipe.id);
+    const isSaved = await service.isRecipeInDb(user.id, recipe.id);
     expect(isSaved).to.equal(true);
   });
 

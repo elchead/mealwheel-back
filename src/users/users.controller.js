@@ -13,7 +13,7 @@ router.put("/:id", update);
 router.delete("/:id", _delete);
 router.post("/:id/saveRecipe", saveRecipe);
 router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
-router.post("/:id/checkRecipe/:recipeId", checkRecipe);
+router.post("/:id/checkRecipe/:recipeId", isRecipeInDb);
 router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
 router.get("/:id/daysToBeUpdated", getDaysToBeUpdated);
 module.exports = router;
@@ -85,9 +85,9 @@ function deleteRecipe(req, res, next) {
     .catch((err) => next(err));
 }
 
-function checkRecipe(req, res, next) {
+function isRecipeInDb(req, res, next) {
   userService
-    .checkRecipe(req.params.id, req.params.recipeId)
+    .isRecipeInDb(req.params.id, req.params.recipeId)
     .then((found) => {
       res.send(found);
     })
