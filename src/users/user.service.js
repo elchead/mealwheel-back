@@ -9,6 +9,7 @@ module.exports = {
   authenticate,
   getAll,
   getById,
+  getByUsername,
   create,
   update,
   delete: _delete,
@@ -19,8 +20,14 @@ module.exports = {
   getDaysToBeUpdated,
 };
 
-async function authenticate({ username, password }) {
+async function getByUsername(username) {
   const user = await User.findOne({ username });
+  if (!user) throw Error("Username " + userParam.username + " is not found");
+  return user;
+}
+
+async function authenticate({ username, password }) {
+  const user = await getByUsername(username);
   if (user && bcrypt.compareSync(password, user.hash)) {
     const token = jwt.sign({ sub: user.id }, config.get("secret"), {
       expiresIn: "7d",
