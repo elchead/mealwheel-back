@@ -42,6 +42,11 @@ describe("users", () => {
   it("should not create duplicate accounts", async () => {
     await expect(service.create(testUser)).to.be.rejected;
   });
+  it("should delete", async () => {
+    await service.delete(userId);
+    const users = await service.getAll();
+    expect(users.length).to.equal(0);
+  });
   it("should authenticate", () => isValidLogin(testUser));
   it("should not authenticate wrong credentials", async () => {
     await expect(isValidLogin({ ...testUser, password: "wrong" })).to.be
@@ -69,10 +74,26 @@ describe("users", () => {
     const isSaved = await service.isRecipeInDb(userId, recipe.id);
     expect(isSaved).to.equal(true);
   });
-
-  it("should delete", async () => {
-    await service.delete(userId);
-    const users = await service.getAll();
-    expect(users.length).to.equal(0);
+  it("should delete selected recipe", async () => {
+    const recipe = {
+      name: "arriba baked winter squash mexican style",
+      id: 137739,
+      minutes: 55,
+      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
+      steps: [
+        "make a choice and proceed with recipe",
+        "depending on size of squash , cut into half or fourths",
+      ],
+      description:
+        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+    };
+    await service.saveRecipe(userId, recipe);
+    const otherId = recipe.id + 1;
+    await service.saveRecipe(userId, { ...recipe, id: otherId });
+    await service.deleteRecipe(userId, recipe.id);
+    const isSaved = await service.isRecipeInDb(userId, recipe.id);
+    expect(isSaved).to.equal(false);
+    const isOtherSaved = await service.isRecipeInDb(userId, otherId);
+    expect(isOtherSaved).to.equal(true);
   });
 });
