@@ -1,4 +1,5 @@
-const expect = require("chai").expect;
+const chai = require("chai").use(require("chai-as-promised"));
+const expect = chai.expect;
 const service = require("./user.service");
 const { dbConnect, dbDisconnect } = require("../../test/utils");
 // const isEqual = require("deep-equal");
@@ -26,10 +27,23 @@ describe("users", () => {
     const users = await service.getAll();
     expect(isEqual(newUser, users[0])).to.equal(true);
   });
+  it("should not create duplicate accounts", async () => {
+    await expect(service.create(testUser)).to.be.rejected;
+  });
   it("should authenticate", async () => {
     const user = await service.authenticate(testUser);
     expect(user.username).to.equal(testUser.username);
   });
+  it("should not authenticate wrong credentials", async () => {
+    await expect(service.authenticate({ testUser, password: "wrong" })).to.be
+      .rejected;
+  });
+  // it("should update credentials", async () => {
+  //   const modUser = { testUser, password: "new" };
+  //   await service.update(userId, modUser);
+  //   const user = await service.authenticate(modUser);
+  //   expect(user.username).to.equal(testUser.username);
+  // });
   it("should save recipe", async () => {
     const recipe = {
       name: "arriba baked winter squash mexican style",

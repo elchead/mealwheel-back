@@ -29,7 +29,7 @@ async function authenticate({ username, password }) {
       ...user.toJSON(),
       token,
     };
-  }
+  } else throw Error("Invalid credentials");
 }
 
 async function getAll() {
@@ -58,7 +58,7 @@ async function create(userParam) {
 }
 
 async function update(id, userParam) {
-  const user = await User.findById(id);
+  const user = await getById(id);
 
   // validate
   if (!user) throw Error("User not found");
@@ -89,33 +89,27 @@ const isRecipeFound = (recipes, recipeId) => {
 };
 
 async function saveRecipe(userId, recipe) {
-  const user = await User.findById(userId);
+  const user = await getById(userId);
 
   // validate
   if (!user) throw Error("User not found");
   if (!isRecipeFound(user.recipes, recipe.id)) {
     user.recipes = [...user.recipes, recipe];
   }
-  await user.save((err) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-  });
+  await user.save();
   return user;
 }
 
 async function deleteRecipe(userId, recipeId) {
-  const user = await User.findById(userId);
+  const user = await getById(userId);
   // validate
   if (!user) throw Error("User not found");
   user.recipes = user.recipes.filter((item) => item.id != recipeId);
-  user.save();
+  await user.save();
 }
 
 async function isRecipeInDb(userId, recipeId) {
-  const users = await getAll(); // TODO why is this necessary???
-  const user = await User.findById(userId);
+  const user = await getById(userId);
   // validate
   if (!user) throw Error("User not found");
   let isFound = false;
@@ -134,15 +128,15 @@ function getNumberOfWeek() {
 }
 
 async function updateDay(userId, day, recipe) {
-  const user = await User.findById(userId);
+  const user = await getById(userId);
   // validate
   if (!user) throw Error("User not found");
   user.weekPlan[day].recipe = recipe;
   user.weekPlan[day].lastUpdatedWeek = getNumberOfWeek();
-  user.save();
+  await user.save();
 }
 async function getDaysToBeUpdated(userId) {
-  const user = await User.findById(userId);
+  const user = await getById(userId);
   // validate
   if (!user) throw Error("User not found");
   const currWeek = getNumberOfWeek();
