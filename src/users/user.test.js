@@ -96,6 +96,37 @@ describe("users", () => {
     const isOtherSaved = await service.isRecipeInDb(userId, otherId);
     expect(isOtherSaved).to.equal(true);
   });
+  it("should get favorite recipes", async () => {
+    const recipe = {
+      name: "arriba baked winter squash mexican style",
+      id: 1,
+      minutes: 55,
+      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
+      steps: [
+        "make a choice and proceed with recipe",
+        "depending on size of squash , cut into half or fourths",
+      ],
+      description:
+        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+    };
+    await service.saveRecipe(userId, recipe);
+    const recipe2 = {
+      name: "pizza",
+      id: 2,
+      minutes: 55,
+      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
+      steps: [
+        "make a choice and proceed with recipe",
+        "depending on size of squash , cut into half or fourths",
+      ],
+      description:
+        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+    };
+    await service.saveRecipe(userId, recipe2);
+    const favRecipes = await service.getFavoriteRecipes(userId);
+    expect(favRecipes.map((e) => e.id)).to.include(recipe.id);
+    expect(favRecipes.map((e) => e.id)).to.include(recipe2.id);
+  });
   it("should update week plan", async () => {
     const recipe = {
       name: "arriba baked winter squash mexican style",

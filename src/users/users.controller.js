@@ -12,6 +12,7 @@ router.get("/:id", getById);
 router.put("/:id", update);
 router.delete("/:id", _delete);
 router.post("/:id/saveRecipe", saveRecipe);
+router.get("/:id/favRecipes", getFavoriteRecipes);
 router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
 router.post("/:id/checkRecipe/:recipeId", isRecipeInDb);
 router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
@@ -105,5 +106,12 @@ function getDaysToBeUpdated(req, res, next) {
   userService
     .getDaysToBeUpdated(req.params.id)
     .then((days) => res.json({ days: days }))
+    .catch((err) => next(err));
+}
+
+function getFavoriteRecipes(req, res, next) {
+  userService
+    .getFavoriteRecipes(req.params.id)
+    .then((recipes) => res.json({ recipes: recipes }))
     .catch((err) => next(err));
 }

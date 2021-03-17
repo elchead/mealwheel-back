@@ -14,6 +14,7 @@ module.exports = {
   update,
   delete: _delete,
   saveRecipe,
+  getFavoriteRecipes,
   deleteRecipe,
   isRecipeInDb: isRecipeInDb,
   updateDay,
@@ -108,6 +109,13 @@ async function saveRecipe(userId, recipe) {
   }
   await user.save();
   return user;
+}
+
+async function getFavoriteRecipes(userId) {
+  const user = await getById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  return [...user.recipes];
 }
 
 async function deleteRecipe(userId, recipeId) {
