@@ -100,8 +100,11 @@ async function saveRecipe(userId, recipe) {
 
   // validate
   if (!user) throw Error("User not found");
-  if (!isRecipeFound(user.recipes, recipe.id)) {
+  const idxFound = isRecipeFound(user.recipes, recipe.id);
+  if (!idxFound) {
     user.recipes = [...user.recipes, recipe];
+  } else {
+    user.recipes[idxFound] = recipe;
   }
   await user.save();
   return user;
