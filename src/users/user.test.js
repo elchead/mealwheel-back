@@ -16,6 +16,49 @@ async function isValidLogin(testUser) {
   return true;
 }
 let userId = undefined;
+
+const recipe = {
+  name: "arriba baked winter squash mexican style",
+  id: 1,
+  minutes: 55,
+  nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
+  steps: [
+    "make a choice and proceed with recipe",
+    "depending on size of squash , cut into half or fourths",
+  ],
+  description:
+    "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+  ingredients: [
+    "winter squash",
+    "mexican seasoning",
+    "mixed spice",
+    "honey",
+    "butter",
+    "olive oil",
+    "salt",
+  ],
+};
+
+const recipe2 = {
+  name: "pizza",
+  id: 2,
+  minutes: 55,
+  nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
+  steps: [
+    "make a choice and proceed with recipe",
+    "depending on size of squash , cut into half or fourths",
+  ],
+  description:
+    "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+  ingredients: [
+    "prepared pizza crust",
+    "sausage patty",
+    "eggs",
+    "milk",
+    "salt and pepper",
+    "cheese",
+  ],
+};
 describe("users", () => {
   before(async () => {
     // process.env.MONGO_URL = undefined;
@@ -58,35 +101,11 @@ describe("users", () => {
     expect(isValidLogin(modUser)).to.eventually.equal(true);
   });
   it("should save recipe", async () => {
-    const recipe = {
-      name: "arriba baked winter squash mexican style",
-      id: 137739,
-      minutes: 55,
-      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
-      steps: [
-        "make a choice and proceed with recipe",
-        "depending on size of squash , cut into half or fourths",
-      ],
-      description:
-        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
-    };
     await service.saveRecipe(userId, recipe);
     const isSaved = await service.isRecipeInDb(userId, recipe.id);
     expect(isSaved).to.equal(true);
   });
   it("should delete selected recipe", async () => {
-    const recipe = {
-      name: "arriba baked winter squash mexican style",
-      id: 137739,
-      minutes: 55,
-      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
-      steps: [
-        "make a choice and proceed with recipe",
-        "depending on size of squash , cut into half or fourths",
-      ],
-      description:
-        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
-    };
     await service.saveRecipe(userId, recipe);
     const otherId = recipe.id + 1;
     await service.saveRecipe(userId, { ...recipe, id: otherId });
@@ -97,49 +116,14 @@ describe("users", () => {
     expect(isOtherSaved).to.equal(true);
   });
   it("should get favorite recipes", async () => {
-    const recipe = {
-      name: "arriba baked winter squash mexican style",
-      id: 1,
-      minutes: 55,
-      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
-      steps: [
-        "make a choice and proceed with recipe",
-        "depending on size of squash , cut into half or fourths",
-      ],
-      description:
-        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
-    };
     await service.saveRecipe(userId, recipe);
-    const recipe2 = {
-      name: "pizza",
-      id: 2,
-      minutes: 55,
-      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
-      steps: [
-        "make a choice and proceed with recipe",
-        "depending on size of squash , cut into half or fourths",
-      ],
-      description:
-        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
-    };
+
     await service.saveRecipe(userId, recipe2);
     const favRecipes = await service.getFavoriteRecipes(userId);
     expect(favRecipes.map((e) => e.id)).to.include(recipe.id);
     expect(favRecipes.map((e) => e.id)).to.include(recipe2.id);
   });
   it("should update week plan", async () => {
-    const recipe = {
-      name: "arriba baked winter squash mexican style",
-      id: 137739,
-      minutes: 55,
-      nutrition: [51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0],
-      steps: [
-        "make a choice and proceed with recipe",
-        "depending on size of squash , cut into half or fourths",
-      ],
-      description:
-        "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
-    };
     await service.updateDay(userId, "mo", recipe);
     await service.updateDay(userId, "fr", recipe);
     const daysToUpdate = await service.getDaysToBeUpdated(userId);
@@ -147,5 +131,13 @@ describe("users", () => {
     expect(daysToUpdate.find((e) => e === "fr")).to.equal(undefined);
     expect(daysToUpdate.find((e) => e === "su")).to.not.equal(undefined);
     expect(daysToUpdate.find((e) => e === "tu")).to.not.equal(undefined);
+  });
+
+  it("should extract ingredients", async () => {
+    await service.updateDay(userId, "mo", recipe);
+    await service.updateDay(userId, "fr", recipe2);
+    const ingredients = await service.getIngredients(userId);
+    const expIngredients = recipe.ingredients.concat(recipe2.ingredients);
+    expect(ingredients).to.eql(expIngredients);
   });
 });

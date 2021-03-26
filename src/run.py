@@ -24,6 +24,7 @@ def get_recipe(idx=0):
                 "depending on size of squash , cut into half or fourths",
             ],
             "description": "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+            "ingredients": ['winter squash', 'mexican seasoning', 'mixed spice', 'honey', 'butter', 'olive oil', 'salt']
         },
         {
             "name": "a bit different breakfast pizza",
@@ -35,6 +36,7 @@ def get_recipe(idx=0):
                 "press dough into the bottom and sides of a 12 inch pizza pan",
             ],
             "description": "this recipe calls for the crust to be prebaked a bit before adding ingredients. feel free to change",
+            "ingredients": ['prepared pizza crust', 'sausage patty', 'eggs', 'milk', 'salt and pepper', 'cheese']
         },
         {
             "name": "arriba baked winter squash mexican style",
@@ -46,6 +48,7 @@ def get_recipe(idx=0):
                 "depending on size of squash , cut into half or fourths",
             ],
             "description": "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
+            "ingredients": ['winter squash', 'mexican seasoning', 'mixed spice', 'honey', 'butter', 'olive oil', 'salt']
         },
     ]
     return recipe

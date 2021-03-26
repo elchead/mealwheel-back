@@ -17,6 +17,7 @@ router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
 router.post("/:id/checkRecipe/:recipeId", isRecipeInDb);
 router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
 router.get("/:id/daysToBeUpdated", getDaysToBeUpdated);
+router.get("/:id/ingredients", getIngredients);
 module.exports = router;
 
 function authenticate(req, res, next) {
@@ -112,6 +113,13 @@ function getDaysToBeUpdated(req, res, next) {
 function getFavoriteRecipes(req, res, next) {
   userService
     .getFavoriteRecipes(req.params.id)
+    .then((recipes) => res.json({ recipes: recipes }))
+    .catch((err) => next(err));
+}
+
+function getIngredients(req, res, next) {
+  userService
+    .getIngredients(req.params.id)
     .then((recipes) => res.json({ recipes: recipes }))
     .catch((err) => next(err));
 }
