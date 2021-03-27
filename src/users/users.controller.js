@@ -112,6 +112,6 @@ function getDaysToBeUpdated(req, res, next) {
 function getFavoriteRecipes(req, res, next) {
   userService
     .getFavoriteRecipes(req.params.id)
-    .then((recipes) => res.json({ recipes: recipes }))
+    .then((recipes) => res.json(recipes))
     .catch((err) => next(err));
 }
