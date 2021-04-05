@@ -12,8 +12,8 @@ const recipe = {
 const schema = new Schema({
   username: { type: String, unique: true, required: true },
   hash: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  // firstName: { type: String, required: true }, // TODO remove
+  // lastName: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
   recipes: {
     type: [recipe],
@@ -29,6 +29,7 @@ const schema = new Schema({
     sa: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
     su: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
   },
+  preferences: { type: [String], required: false, default: [] },
 });
 
 schema.set("toJSON", {
