@@ -13,10 +13,10 @@ app.use(cors({ credentials: true, origin: true }));
 
 // use JWT auth to secure the api
 const recipeRoutes = require("./recipes/recipes.controller");
-app.use(jwt()); // TODO include Auth before end point
 app.use("/", recipeRoutes);
 
 // api routes
+app.use(jwt()); // TODO include Auth before end point
 app.use("/users", require("./users/users.controller"));
 
 app.listen(PORT);
