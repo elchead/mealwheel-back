@@ -30,6 +30,7 @@ const schema = new Schema({
     su: { recipe: { type: recipe }, lastUpdatedWeek: { type: Number } },
   },
   preferences: { type: [String], required: false, default: [] },
+  likedMeals: { type: [Number], required: false, default: [] },
 });
 
 schema.set("toJSON", {
