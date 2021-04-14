@@ -5,7 +5,7 @@ const file = require("../utils/file");
  * @return {string}
  */
 function getRecipes() {
-  filename = "./src/run.py";
+  filename = "./src/data-science/run.py";
   const py = new file.PythonExecutor(filename);
   return py.getStringOutput();
 }

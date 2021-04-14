@@ -1,5 +1,7 @@
 const PORT = process.env.PORT || 4000;
 require("dotenv").config();
+downloadFiles = require("./data-science/downloader");
+downloadFiles();
 const express = require("express");
 const app = express();
 const cors = require("cors");

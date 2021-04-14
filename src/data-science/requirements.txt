@@ -1,0 +1,4 @@
+lightfm
+pandas
+numpy
+sklearn
