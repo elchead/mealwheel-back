@@ -22,5 +22,5 @@ app.use(jwt()); // TODO include Auth before end point
 app.use("/users", require("./users/users.controller"));
 
 app.listen(PORT);
-console.log("listening on: http://localhost:4000/recipes");
+console.log(`listening on: http://localhost:${PORT}`);
 module.exports = app; // for testing
