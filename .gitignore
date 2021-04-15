@@ -5,3 +5,5 @@ out
 dist
 .vscode
 .env
+*.csv
+*.pkl
