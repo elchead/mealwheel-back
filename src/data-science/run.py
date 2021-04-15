@@ -147,7 +147,7 @@ def load_data(path=""):
     return raw_recipes, mappings, model, dataset
 
 
-def send_json(dict, filename):
+def send_json(dict):
     # with open(Path(os.getcwd()) / filename, "w") as f:
     #     json.dump(recipe, f)
     print(json.dumps(dict))  # send via console output
@@ -261,5 +261,5 @@ try:
     )
     print(recipe)
 except NoFiles as e:
-    print(str(e))
+    print(send_json({"error": e.message}))
 sys.stdout.flush()
