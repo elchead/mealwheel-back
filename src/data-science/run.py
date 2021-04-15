@@ -132,17 +132,17 @@ def load_data(path=""):
         model    Params:
         path: Path to folder with the files. If path="", files must be in the same folder as this notebook.
     """
-    try:
-        raw_recipes = pd.read_csv(path + "RAW_recipes.csv", sep=",")
-        filename = "dataset.pkl"
-        with open(path + filename, "rb") as file:
-            dataset = pickle.load(file)
-        filename = "recmodel.pkl"
-        with open(path + filename, "rb") as file:
-            model = pickle.load(file)
-    except Exception as e:
-        print(str(e))
-        raise NoFiles("DS files are not yet downloaded")
+    # try:
+    raw_recipes = pd.read_csv(path + "RAW_recipes.csv", sep=",")
+    filename = "dataset.pkl"
+    with open(path + filename, "rb") as file:
+        dataset = pickle.load(file)
+    filename = "recmodel.pkl"
+    with open(path + filename, "rb") as file:
+        model = pickle.load(file)
+    # except Exception as e:
+    #     # print(str(e))
+    #     raise NoFiles("DS files are not yet downloaded")
     mappings = Mappings(dataset)
     return raw_recipes, mappings, model, dataset
 
@@ -260,6 +260,6 @@ try:
         "C:/Users/adria/Programming/mealwheel-back/src/data-science/",
     )
     print(recipe)
-except NoFiles as e:
-    print(send_json({"error": e.message}))
+except Exception as e:
+    send_json({"error": str(e)})
 sys.stdout.flush()
