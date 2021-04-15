@@ -235,10 +235,13 @@ def get_recipes(a, new_user_recipe_id, path):
     recommendations = recommendations[["user_id", "recipe_id", "score"]]
 
     to_adrian = recommendations.set_index("recipe_id").join(raw_recipes.set_index("id"))
-    to_adrian.drop(["name"], axis=1, inplace=True)
+    to_adrian.drop(["n_ingredients"], axis=1, inplace=True)
+    to_adrian.drop(["n_steps"], axis=1, inplace=True)
+    to_adrian.drop(["nutrition"], axis=1, inplace=True)
     to_adrian.drop(["contributor_id"], axis=1, inplace=True)
     to_adrian.drop(["submitted"], axis=1, inplace=True)
     to_adrian.drop(["user_id"], axis=1, inplace=True)
+    to_adrian.drop(["score"], axis=1, inplace=True)
 
     # Convert to json
     output = to_adrian.to_json(orient="records")
