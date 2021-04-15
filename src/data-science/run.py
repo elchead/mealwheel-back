@@ -140,7 +140,8 @@ def load_data(path=""):
         filename = "recmodel.pkl"
         with open(path + filename, "rb") as file:
             model = pickle.load(file)
-    except:
+    except Exception as e:
+        print(str(e))
         raise NoFiles("DS files are not yet downloaded")
     mappings = Mappings(dataset)
     return raw_recipes, mappings, model, dataset
