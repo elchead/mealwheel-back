@@ -2,10 +2,18 @@ const fs = require("fs");
 const Path = require("path");
 const axios = require("axios");
 
+function fileExists(path) {
+  return fs.existsSync(path);
+}
+
 // eslint-disable-next-line require-jsdoc
 async function downloadFile(url, filename) {
-  url = `${url}/${filename}`;
   targetpath = Path.resolve(__dirname, filename);
+  if (fileExists(targetpath)) {
+    console.log(`${filename} files already exist`);
+    return;
+  }
+  url = `${url}/${filename}`;
   // axios image download with response type "stream"
   const response = await axios({
     method: "GET",
