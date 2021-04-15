@@ -133,12 +133,12 @@ def load_data(path=""):
         path: Path to folder with the files. If path="", files must be in the same folder as this notebook.
     """
     # try:
-    raw_recipes = pd.read_csv(path + "RAW_recipes.csv", sep=",")
+    raw_recipes = pd.read_csv(os.path.join(path, "RAW_recipes.csv"), sep=",")
     filename = "dataset.pkl"
-    with open(path + filename, "rb") as file:
+    with open(os.path.join(path, filename), "rb") as file:
         dataset = pickle.load(file)
     filename = "recmodel.pkl"
-    with open(path + filename, "rb") as file:
+    with open(os.path.join(path, filename), "rb") as file:
         model = pickle.load(file)
     # except Exception as e:
     #     # print(str(e))
@@ -255,9 +255,7 @@ if len(sys.argv) != 1:
 # send_json(recipe, "data/recipe.json")
 try:
     recipe = get_recipes(
-        3,
-        new_user_recipe_id,
-        "C:/Users/adria/Programming/mealwheel-back/src/data-science/",
+        3, new_user_recipe_id, os.path.join(os.getcwd(), "src", "data-science")
     )
     print(recipe)
 except Exception as e:
