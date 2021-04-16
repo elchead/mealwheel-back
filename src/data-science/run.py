@@ -153,7 +153,7 @@ def send_json(dict):
     print(json.dumps(dict))  # send via console output
 
 
-def get_recipes(idx=0):
+def get_recipe(nbr=0):
     # example from https://www.kaggle.com/shuyangli94/food-com-recipes-and-user-interactions?select=RAW_recipes.csv
     # recipe = {"Ingredients": ["Apple", "Banana"], "Steps": "Do that..."}
     recipe = [
@@ -191,7 +191,7 @@ def get_recipes(idx=0):
             "description": "autumn is my favorite time of year to cook! this recipe can be prepared either spicy or sweet",
         },
     ]
-    return recipe
+    return recipe[:nbr]
 
 
 def get_recipes(a, new_user_recipe_id, path):
@@ -249,18 +249,34 @@ def get_recipes(a, new_user_recipe_id, path):
     return output
 
 
-new_user_recipe_id = [4065, 10123, 295797, 108524, 10045]
+def hardcodedRecipes():
+    recipe_idx = 3
+    if len(sys.argv) > 1:
+        recipe_idx = int(sys.argv[1])
+    recipe = get_recipe(recipe_idx)
+    send_json(recipe)
 
-recipe_idx = 0
-if len(sys.argv) != 1:
-    recipe_idx = sys.argv[1]
-# recipe = get_recipe(recipe_idx)
-# send_json(recipe, "data/recipe.json")
-try:
-    recipe = get_recipes(
-        3, new_user_recipe_id, os.path.join(os.getcwd(), "src", "data-science")
-    )
-    print(recipe)
-except Exception as e:
-    send_json({"error": str(e)})
+
+if len(sys.argv) < 3:
+    hardcodedRecipes()
+else:
+    new_user_recipe_id = [4065, 10123, 295797, 108524, 10045]
+    nbr_recipes = int(sys.argv[1])
+    if len(sys.argv) >= 3:
+        raw_idxs = sys.argv[2]
+        new_user_recipe_id = list(
+            map(int, raw_idxs.strip("[]").split(","))
+        )  # input as: [1,3,4]
+    try:
+        recipe = get_recipes(
+            nbr_recipes,
+            new_user_recipe_id,
+            os.path.join(os.getcwd(), "src", "data-science"),
+        )
+        # recipe = get_recipes(
+        #     3, new_user_recipe_id, os.path.join(os.getcwd(), "src", "data-science")
+        # )
+        print(recipe)
+    except Exception as e:
+        send_json({"error": str(e)})
 sys.stdout.flush()
