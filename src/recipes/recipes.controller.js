@@ -8,7 +8,16 @@ const router = express.Router();
 
 const recommend = require("./recipes.service");
 router.get("/recipes", async function (req, res, next) {
-  const recipe = await recommend.getRecipes().catch(console.error);
+  // req.query: ?nbr=3 : number of recipes to be returned
+  const nbrRecipes = Number(req.query.nbr) || 3;
+  const recipe = await recommend.getRecipes(nbrRecipes).catch(console.error);
+  res.json(JSON.parse(recipe));
+});
+
+router.get("/recipes", async function (req, res, next) {
+  // req.query: ?nbr=3 : number of recipes to be returned
+  const nbrRecipes = Number(req.query.nbr) || 3;
+  const recipe = await recommend.getRecipes(nbrRecipes).catch(console.error);
   res.json(JSON.parse(recipe));
 });
 module.exports = router;

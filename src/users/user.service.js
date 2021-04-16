@@ -16,6 +16,7 @@ module.exports = {
   delete: _delete,
   saveRecipe,
   getFavoriteRecipes,
+  getFavoriteRecipeIds,
   deleteRecipe,
   isRecipeInDb: isRecipeInDb,
   updateDay,
@@ -113,6 +114,14 @@ async function saveRecipe(userId, recipe) {
   return user;
 }
 
+async function getFavoriteRecipeIds(userId) {
+  const recipes = await getFavoriteRecipes(userId);
+  const ids = [];
+  recipes.forEach((recipe) => {
+    ids.push(recipe.id);
+  });
+  return ids;
+}
 async function getFavoriteRecipes(userId) {
   const user = await getById(userId);
   // validate

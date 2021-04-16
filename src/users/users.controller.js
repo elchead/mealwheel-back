@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const userService = require("./user.service");
-
+const recommend = require("../recipes/recipes.service");
 // routes
 router.post("/authenticate", authenticate);
 router.post("/register", register);
@@ -18,6 +18,15 @@ router.post("/:id/checkRecipe/:recipeId", isRecipeInDb);
 router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
 router.get("/:id/daysToBeUpdated", getDaysToBeUpdated);
 router.get("/:id/weekPlan", getWeekPlan);
+router.get("/:id/recipes", async function (req, res, next) {
+  const nbrRecipes = Number(req.query.nbr) || 3;
+  const ids = await userService.getFavoriteRecipeIds(req.params.id);
+  console.log(ids);
+  const recipe = await recommend
+    .getRecipes(nbrRecipes, ids)
+    .catch(console.error);
+  res.json(JSON.parse(recipe));
+});
 module.exports = router;
 
 function authenticate(req, res, next) {

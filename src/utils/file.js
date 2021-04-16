@@ -21,9 +21,18 @@ class PythonExecutor {
    *
    * @param {string} filepath : relative filepath starting from root dir
    */
-  constructor(filepath) {
+  constructor(filepath, nbrRecipes, ids) {
     this.path = filepath;
-    this.process = spawn("python", [filepath]);
+    // console.log("[" + String(ids) + "]");
+    if (ids !== undefined && ids.length > 0) {
+      this.process = spawn("python", [
+        filepath,
+        nbrRecipes,
+        "[" + String(ids) + "]",
+      ]);
+    } else {
+      this.process = spawn("python", [filepath, nbrRecipes]);
+    }
     try {
       isFileExistent(this.path);
     } catch (err) {
