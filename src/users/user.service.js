@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../_helpers/db");
 const User = db.User;
+var _ = require("lodash/core");
 
 module.exports = {
   authenticate,
@@ -19,6 +20,7 @@ module.exports = {
   isRecipeInDb: isRecipeInDb,
   updateDay,
   getDaysToBeUpdated,
+  getWeekPlan,
 };
 
 async function getByUsername(username) {
@@ -163,5 +165,16 @@ async function getDaysToBeUpdated(userId) {
     if (obj.lastUpdatedWeek != currWeek) days.push(day);
   });
   days = days.slice(1); // skip init entry
+  return days;
+}
+
+async function getWeekPlan(userId) {
+  const user = await getById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  let days = {};
+  Object.entries(user.weekPlan).forEach(([day, obj]) => {
+    days[day] = obj.recipe;
+  });
   return days;
 }

@@ -17,6 +17,7 @@ router.post("/:id/deleteRecipe/:recipeId", deleteRecipe);
 router.post("/:id/checkRecipe/:recipeId", isRecipeInDb);
 router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
 router.get("/:id/daysToBeUpdated", getDaysToBeUpdated);
+router.get("/:id/weekPlan", getWeekPlan);
 module.exports = router;
 
 function authenticate(req, res, next) {
@@ -106,6 +107,13 @@ function getDaysToBeUpdated(req, res, next) {
   userService
     .getDaysToBeUpdated(req.params.id)
     .then((days) => res.json({ days: days }))
+    .catch((err) => next(err));
+}
+
+function getWeekPlan(req, res, next) {
+  userService
+    .getWeekPlan(req.params.id)
+    .then((days) => res.json(days))
     .catch((err) => next(err));
 }
 
