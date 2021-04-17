@@ -114,14 +114,24 @@ async function saveRecipe(userId, recipe) {
   return user;
 }
 
+async function getPreferences(userId) {
+  const user = await getById(userId);
+  // validate
+  if (!user) throw Error("User not found");
+  return user.preferences;
+}
+
 async function getFavoriteRecipeIds(userId) {
   const recipes = await getFavoriteRecipes(userId);
+  const preferences = await getPreferences(userId);
   const ids = [];
   recipes.forEach((recipe) => {
-    ids.push(recipe.id);
+    if (preferences.every((tag) => recipe.tags.includes(tag)))
+      ids.push(recipe.id);
   });
   return ids;
 }
+
 async function getFavoriteRecipes(userId) {
   const user = await getById(userId);
   // validate
