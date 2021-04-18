@@ -133,7 +133,20 @@ def load_data(path=""):
         path: Path to folder with the files. If path="", files must be in the same folder as this notebook.
     """
     # try:
-    raw_recipes = pd.read_csv(os.path.join(path, "RAW_recipes.csv"), sep=",")
+    raw_recipes = pd.read_csv(
+        os.path.join(path, "RAW_recipes.csv"),
+        sep=",",
+        usecols=[
+            "name",
+            "id",
+            "minutes",
+            "tags",
+            "n_steps",
+            "steps",
+            "ingredients",
+            "n_ingredients",
+        ],
+    )
     filename = "dataset.pkl"
     with open(os.path.join(path, filename), "rb") as file:
         dataset = pickle.load(file)
@@ -237,9 +250,6 @@ def get_recipes(a, new_user_recipe_id, path):
     to_adrian = recommendations.set_index("recipe_id").join(raw_recipes.set_index("id"))
     to_adrian.drop(["n_ingredients"], axis=1, inplace=True)
     to_adrian.drop(["n_steps"], axis=1, inplace=True)
-    to_adrian.drop(["nutrition"], axis=1, inplace=True)
-    to_adrian.drop(["contributor_id"], axis=1, inplace=True)
-    to_adrian.drop(["submitted"], axis=1, inplace=True)
     to_adrian.drop(["user_id"], axis=1, inplace=True)
     to_adrian.drop(["score"], axis=1, inplace=True)
 
@@ -257,7 +267,7 @@ def hardcodedRecipes():
     send_json(recipe)
 
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 2:
     hardcodedRecipes()
 else:
     new_user_recipe_id = [4065, 10123, 295797, 108524, 10045]
