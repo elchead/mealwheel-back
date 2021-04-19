@@ -18,16 +18,21 @@ router.post("/:id/checkRecipe/:recipeId", isRecipeInDb);
 router.put("/:id/weekPlan/:day", updateDay); // day: mo,tu,we,th,fr,sa,su
 router.get("/:id/daysToBeUpdated", getDaysToBeUpdated);
 router.get("/:id/weekPlan", getWeekPlan);
-router.get("/:id/recipes", async function (req, res, next) {
-  const nbrRecipes = Number(req.query.nbr) || 3;
-  const ids = await userService.getFavoriteRecipeIds(req.params.id);
-  console.log(ids);
-  const recipe = await recommend
-    .getRecipes(nbrRecipes, ids)
-    .catch(console.error);
-  res.json(JSON.parse(recipe));
-});
+router.get("/:id/recipes", getRecommended);
 module.exports = router;
+
+function getRecommended(req, res, next) {
+  const t = async function (req, res, next) {
+    const nbrRecipes = Number(req.query.nbr) || 3;
+    const ids = await userService.getFavoriteRecipeIds(req.params.id);
+    // console.log(ids);
+    const recipe = await recommend
+      .getRecipes(nbrRecipes, ids)
+      .catch(console.error);
+    res.json(JSON.parse(recipe));
+  };
+  t(req, res, next);
+}
 
 function authenticate(req, res, next) {
   userService

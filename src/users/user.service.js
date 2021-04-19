@@ -25,8 +25,9 @@ module.exports = {
 };
 
 async function getByUsername(username) {
+  console.log(username);
   const user = await User.findOne({ username });
-  if (!user) throw Error("Username " + userParam.username + " is not found");
+  if (!user) throw Error("Username " + username + " is not found");
   return user;
 }
 
