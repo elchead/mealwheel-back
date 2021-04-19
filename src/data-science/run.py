@@ -11,6 +11,8 @@ from lightfm import LightFM
 from lightfm.data import Dataset
 from sklearn.base import clone
 
+from ast import literal_eval
+
 
 class NoFiles(Exception):
     pass
@@ -242,17 +244,20 @@ def get_recipes(a, new_user_recipe_id, path):
         sorted_scores_top, columns=["internal_item_id", "score"]
     )
     recommendations["user_id"] = user_id
-    recommendations["recipe_id"] = recommendations["internal_item_id"].apply(
+    recommendations["id"] = recommendations["internal_item_id"].apply(
         lambda x: mappings.col2itemid[x]
     )
-    recommendations = recommendations[["user_id", "recipe_id", "score"]]
+    recommendations = recommendations[["user_id", "id", "score"]]
 
-    to_adrian = recommendations.set_index("recipe_id").join(raw_recipes.set_index("id"))
+    to_adrian = recommendations.set_index("id").join(raw_recipes.set_index("id"))
     to_adrian.drop(["n_ingredients"], axis=1, inplace=True)
     to_adrian.drop(["n_steps"], axis=1, inplace=True)
     to_adrian.drop(["user_id"], axis=1, inplace=True)
     to_adrian.drop(["score"], axis=1, inplace=True)
-
+    to_adrian.reset_index(inplace=True)
+    to_adrian["steps"] = to_adrian["steps"].apply(literal_eval)
+    to_adrian["tags"] = to_adrian["tags"].apply(literal_eval)
+    to_adrian["ingredients"] = to_adrian["ingredients"].apply(literal_eval)
     # Convert to json
     output = to_adrian.to_json(orient="records")
 
