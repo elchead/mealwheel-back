@@ -282,6 +282,8 @@ else:
         new_user_recipe_id = list(
             map(int, raw_idxs.strip("[]").split(","))
         )  # input as: [1,3,4]
+        if len(new_user_recipe_id) > 5:  # choose latest 5 recipes
+            new_user_recipe_id = new_user_recipe_id[-5:]
     try:
         recipe = get_recipes(
             nbr_recipes,
