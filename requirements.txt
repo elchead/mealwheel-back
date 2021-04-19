@@ -2,4 +2,3 @@ lightfm
 pandas
 numpy
 sklearn
-ast
