@@ -149,6 +149,7 @@ def load_data(path=""):
             "n_ingredients",
         ],
     )
+    raw_recipes = raw_recipes.sample(140000)
     filename = "dataset.pkl"
     with open(os.path.join(path, filename), "rb") as file:
         dataset = pickle.load(file)
@@ -297,3 +298,28 @@ else:
     except Exception as e:
         send_json({"error": str(e)})
 sys.stdout.flush()
+
+
+def random_recipe_ids(n, path):
+    """
+    n: number of random recipe_ids
+    path: Path to folder with the files. If path="", files must be in the same folder as this notebook
+    Returns: n random recipe_ids
+    """
+    # Load data
+    raw_recipes, _, _, _ = load_data(path)
+    # random = raw_interactions.loc[raw_interactions['rating'] == 5]
+    # random = raw_recipes['id'].sample(n)
+    random = raw_recipes.sample(n)
+    random.drop(["n_ingredients"], axis=1, inplace=True)
+    random.drop(["n_steps"], axis=1, inplace=True)
+    random["steps"] = random["steps"].apply(literal_eval)
+    random["ingredients"] = random["ingredients"].apply(literal_eval)
+    # Convert to json
+    output = random.to_json(orient="records")
+    # random1 = random.to_frame()
+    return output
+
+
+# print("and", random_recipe_ids(5, os.path.join(os.getcwd(), "src", "data-science")))
+
