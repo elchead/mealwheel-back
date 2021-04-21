@@ -149,7 +149,7 @@ def load_data(path=""):
             "n_ingredients",
         ],
     )
-    raw_recipes = raw_recipes.sample(140000)
+    # raw_recipes = raw_recipes.sample(140000)
     filename = "dataset.pkl"
     with open(os.path.join(path, filename), "rb") as file:
         dataset = pickle.load(file)
