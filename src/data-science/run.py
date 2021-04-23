@@ -273,31 +273,35 @@ def hardcodedRecipes():
     send_json(recipe)
 
 
-if len(sys.argv) < 2:
-    hardcodedRecipes()
-else:
-    new_user_recipe_id = [4065, 10123, 295797, 108524, 10045]
-    nbr_recipes = int(sys.argv[1])
-    if len(sys.argv) >= 3:
-        raw_idxs = sys.argv[2]
-        new_user_recipe_id = list(
-            map(int, raw_idxs.strip("[]").split(","))
-        )  # input as: [1,3,4]
-        if len(new_user_recipe_id) > 5:  # choose latest 5 recipes
-            new_user_recipe_id = new_user_recipe_id[-5:]
-    try:
-        recipe = get_recipes(
-            nbr_recipes,
-            new_user_recipe_id,
-            os.path.join(os.getcwd(), "src", "data-science"),
-        )
-        # recipe = get_recipes(
-        #     3, new_user_recipe_id, os.path.join(os.getcwd(), "src", "data-science")
-        # )
-        print(recipe)
-    except Exception as e:
-        send_json({"error": str(e)})
-sys.stdout.flush()
+hardcodedRecipes()
+
+
+#### new merged version with DS model
+# if len(sys.argv) < 2:
+#     hardcodedRecipes()
+# else:
+#     new_user_recipe_id = [4065, 10123, 295797, 108524, 10045]
+#     nbr_recipes = int(sys.argv[1])
+#     if len(sys.argv) >= 3:
+#         raw_idxs = sys.argv[2]
+#         new_user_recipe_id = list(
+#             map(int, raw_idxs.strip("[]").split(","))
+#         )  # input as: [1,3,4]
+#         if len(new_user_recipe_id) > 5:  # choose latest 5 recipes
+#             new_user_recipe_id = new_user_recipe_id[-5:]
+#     try:
+#         recipe = get_recipes(
+#             nbr_recipes,
+#             new_user_recipe_id,
+#             os.path.join(os.getcwd(), "src", "data-science"),
+#         )
+#         # recipe = get_recipes(
+#         #     3, new_user_recipe_id, os.path.join(os.getcwd(), "src", "data-science")
+#         # )
+#         print(recipe)
+#     except Exception as e:
+#         send_json({"error": str(e)})
+# sys.stdout.flush()
 
 
 def random_recipe_ids(n, path):
